@@ -23,7 +23,7 @@ class WorkShopVeiwModel(application: Application): AndroidViewModel(application)
     private var dao : Dao = MainDatabase.getDatabase(application).getDao()
 
     // WorkShopFragemnt
-    private var _allWorkShops = MutableLiveData<List<WorkShopTable>>()
+    var _allWorkShops = MutableLiveData<List<WorkShopTable>>()
 
     init {
         repo = Repository(dao)
