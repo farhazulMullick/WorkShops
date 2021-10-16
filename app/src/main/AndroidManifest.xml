@@ -10,6 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WorkShop">
         <activity
+            android:name=".loginsignup.CreateAccActivity"
+            android:exported="true" />
+        <activity
+            android:name=".loginsignup.LoginActivity"
+            android:exported="true" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
