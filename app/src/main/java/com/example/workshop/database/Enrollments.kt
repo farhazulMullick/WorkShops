@@ -6,7 +6,7 @@ import androidx.room.ForeignKey
 import androidx.room.ForeignKey.CASCADE
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "enrollments", primaryKeys = ["user_id", "workshop_id"])
+@Entity(tableName = "enrollments")
 data class Enrollments(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "enrollment_id")

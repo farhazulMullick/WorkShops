@@ -1,6 +1,7 @@
 package com.example.workshop.database
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
 class Repository(private val dao: Dao) {
@@ -8,7 +9,7 @@ class Repository(private val dao: Dao) {
         const val TAG = "Repository"
     }
 
-    suspend fun getAllWorkShops(): MutableLiveData<List<WorkShopTable>>{
+    fun getAllWorkShops(): LiveData<List<WorkShopTable>>{
         Log.d(TAG, "getAllWorkShops -> SuccessFully fetched all workShops, size ${dao.getAllWorkShops().value?.size}")
         return dao.getAllWorkShops()
     }
@@ -33,7 +34,7 @@ class Repository(private val dao: Dao) {
     }
 
     suspend fun fetchEnrolledWorkShops(userId: Int)
-    : MutableLiveData<List<WorkShopTable>> {
+    : LiveData<List<WorkShopTable>> {
         val workShopList = dao.fetchEnrolledWorkShops(userId)
         if ( !workShopList.value.isNullOrEmpty()){
             Log.d(TAG, "fetchEnrolledWorkShops -> found ${workShopList.value!!.size}")

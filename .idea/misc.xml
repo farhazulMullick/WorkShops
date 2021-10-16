@@ -3,8 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/AndriodStudioProjects/workshop/app/src/main/res/drawable/bg_emailpass_edittext.xml" value="0.21614583333333334" />
         <entry key="..\:/AndriodStudioProjects/workshop/app/src/main/res/drawable/button_backgraound.xml" value="0.21614583333333334" />
-        <entry key="..\:/AndriodStudioProjects/workshop/app/src/main/res/layout/activity_create_acc.xml" value="0.14492753623188406" />
+        <entry key="..\:/AndriodStudioProjects/workshop/app/src/main/res/layout/activity_create_acc.xml" value="0.22" />
+        <entry key="..\:/AndriodStudioProjects/workshop/app/src/main/res/layout/activity_login.xml" value="0.22" />
         <entry key="..\:/AndriodStudioProjects/workshop/app/src/main/res/layout/activity_main.xml" value="0.12" />
         <entry key="..\:/AndriodStudioProjects/workshop/app/src/main/res/layout/fragment_work_shop.xml" value="0.1" />
         <entry key="..\:/AndriodStudioProjects/workshop/app/src/main/res/layout/list_item_workshop.xml" value="0.2" />

@@ -7,6 +7,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "workshop_table")
 data class WorkShopTable (
     @ColumnInfo(name = "workshop_id")
+    @PrimaryKey(autoGenerate = true)
     val workShopId: Int,
 
     @ColumnInfo(name = "title")

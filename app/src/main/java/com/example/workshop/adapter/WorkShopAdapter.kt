@@ -1,5 +1,6 @@
 package com.example.workshop.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,9 @@ import com.example.workshop.R
 import com.example.workshop.database.WorkShopTable
 
 class WorkShopAdapter: RecyclerView.Adapter<WorkShopAdapter.WorkShopViewHolder>() {
+    companion object{
+        const val TAG = "WorkShopAdapter"
+    }
 
     private var workShopData = emptyList<WorkShopTable>()
 
@@ -45,6 +49,7 @@ class WorkShopAdapter: RecyclerView.Adapter<WorkShopAdapter.WorkShopViewHolder>(
             tvKnowMore.setOnClickListener {
 
             }
+            Log.d(TAG, "onBindHolder -> id ${currentData.workShopId}")
         }
     }
 

@@ -9,5 +9,19 @@
         android:id="@+id/workShopFragment"
         android:name="com.example.workshop.fragments.WorkShopFragment"
         android:label="fragment_work_shop"
-        tools:layout="@layout/fragment_work_shop" />
+        tools:layout="@layout/fragment_work_shop" >
+        <action
+            android:id="@+id/action_workShopFragment_to_dashBoardFragment"
+            app:destination="@id/dashBoardFragment" />
+    </fragment>
+    <activity
+        android:id="@+id/loginActivity"
+        android:name="com.example.workshop.loginsignup.LoginActivity"
+        android:label="activity_login"
+        tools:layout="@layout/activity_login" />
+    <fragment
+        android:id="@+id/dashBoardFragment"
+        android:name="com.example.workshop.fragments.DashBoardFragment"
+        android:label="fragment_dash_board"
+        tools:layout="@layout/fragment_dash_board" />
 </navigation>
