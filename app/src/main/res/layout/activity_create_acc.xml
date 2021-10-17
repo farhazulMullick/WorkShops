@@ -5,7 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="viewModel"
+            type="com.example.workshop.viewmodel.AuthViewModel" />
     </data>
 
     <RelativeLayout
@@ -37,6 +39,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/CustomEmailPassEditText"
+                    android:text="@={viewModel.userName}"
                     android:hint="Your Name" />
 
                 <EditText
@@ -44,6 +47,7 @@
                     android:layout_marginTop="24dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="@={viewModel.emailIdOrUserId}"
                     style="@style/CustomEmailPassEditText"
                     android:hint="EmailId or UserId" />
 
@@ -53,6 +57,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/CustomEmailPassEditText"
+                    android:text="@={viewModel.password}"
                     android:inputType="textPassword"
                     android:hint="Password" />
 
@@ -92,12 +97,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_margin="8dp"
-            android:text="Create Account"
-            android:textColor="@color/white"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/button_backgraound"
             android:fontFamily="@font/poppins_regular"
-            android:textSize="16sp"
+            android:text="Create Account"
             android:textAllCaps="false"
-            android:background="@drawable/button_backgraound" />
+            android:onClick="@{(view)->viewModel.signUpNewUser(view)}"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
     </RelativeLayout>
 </layout>

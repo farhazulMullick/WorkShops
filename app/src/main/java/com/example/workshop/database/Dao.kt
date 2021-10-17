@@ -19,12 +19,12 @@ interface Dao {
     suspend fun addAllWorkShops(workShop: WorkShopTable)
 
     // SignUp
-    @Insert(onConflict = OnConflictStrategy.ABORT)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     fun signUpNewUser(userTable: UserTable)
 
     // Login
     @Query("SELECT user_id FROM user_table WHERE email_id = :emailId AND password = :password")
-    fun loginUser(emailId: String, password: String): UserTable
+    fun loginUser(emailId: String, password: String): Int
 
     // Apply for a specific workshop
     @Insert(onConflict = OnConflictStrategy.ABORT)
@@ -36,6 +36,7 @@ interface Dao {
 
     @Query("SELECT * FROM workshop_table INNER JOIN enrollments ON workshop_table.workshop_id = enrollments.workshop_id WHERE enrollments.user_id = :userId")
     fun fetchEnrolledWorkShops(userId: Int): LiveData<List<WorkShopTable>>
+
 
 
 }

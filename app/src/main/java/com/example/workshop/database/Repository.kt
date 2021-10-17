@@ -3,6 +3,7 @@ package com.example.workshop.database
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.workshop.listeners.AuthListener
 
 class Repository(private val dao: Dao) {
     companion object{
@@ -21,8 +22,9 @@ class Repository(private val dao: Dao) {
     suspend fun loginCurrentUser(emailId: String, password: String) =
         dao.loginUser(emailId, password)
 
-    suspend fun signUpNewUser(userTable: UserTable){
+    fun signUpNewUser(userTable: UserTable, authListener: AuthListener? = null){
         dao.signUpNewUser(userTable)
+        authListener?.onAuthCompleted()
     }
 
     suspend fun enrollInWorkShop(enrollments: Enrollments){
