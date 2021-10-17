@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         setUpDrawerHandle()
 
-        inflateNavMenuLayout()
+
     }
 
     private fun inflateNavMenuLayout() {
@@ -117,6 +117,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 this.openDrawer(GravityCompat.START)
         }
         return true
+    }
+
+    override fun onStart() {
+        super.onStart()
+        inflateNavMenuLayout()
     }
 
     override fun onDestroy() {

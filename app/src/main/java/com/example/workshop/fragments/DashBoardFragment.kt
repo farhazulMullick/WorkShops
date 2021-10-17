@@ -39,26 +39,7 @@ class DashBoardFragment : Fragment() {
         viewModel = ViewModelProvider(requireActivity(), factory).get(WorkShopVeiwModel::class.java)
 
 
-
         setUpRecyclerView()
-        viewModel.getUserId()
-        viewModel.userId.observe(viewLifecycleOwner, Observer { userId ->
-            if (userId > 0){
-                signInState()
-                viewModel._enrolledWorkShops.observe(viewLifecycleOwner, Observer {
-                    if (it.isNullOrEmpty()){
-                        Log.d(TAG, "No Enrollments")
-                    }
-                    else{
-                        dashBoardAdapter.setData(it)
-                    }
-
-                })
-            }
-            else{
-                signOutState()
-            }
-        })
 
         return binding.root
     }
@@ -103,11 +84,16 @@ class DashBoardFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
+
+        binding.swipeRefresh.setOnRefreshListener {
+            binding.swipeRefresh.isRefreshing = false
+        }
+
         viewModel.getUserId()
         viewModel.userId.observe(viewLifecycleOwner, Observer { userId ->
             if (userId > 0){
                 signInState()
-                viewModel._enrolledWorkShops.observe(viewLifecycleOwner, Observer {
+                viewModel.fetchAppliedWorkShops().observe(viewLifecycleOwner, Observer {
                     if (it.isNullOrEmpty()){
                         Log.d(TAG, "No Enrollments")
                     }

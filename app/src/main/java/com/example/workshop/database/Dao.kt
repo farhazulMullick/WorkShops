@@ -7,6 +7,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface Dao {
@@ -36,6 +37,9 @@ interface Dao {
 
     @Query("SELECT * FROM workshop_table INNER JOIN enrollments ON workshop_table.workshop_id = enrollments.workshop_id WHERE enrollments.user_id = :userId")
     fun fetchEnrolledWorkShops(userId: Int): LiveData<List<WorkShopTable>>
+
+    @Query("SELECT * FROM workshop_table INNER JOIN enrollments ON workshop_table.workshop_id = enrollments.workshop_id WHERE enrollments.user_id = :userId")
+    fun fetchAppliedWorkShops(userId: Int): Flow<List<WorkShopTable>>
 
     @Query("SELECT user_name FROM user_table WHERE user_id = :userId")
     suspend fun getUserInfo(userId: Int): String

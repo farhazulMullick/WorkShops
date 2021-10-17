@@ -36,6 +36,7 @@
                 android:id="@+id/textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
                 android:text="@={viewModel.emailIdOrUserId}"
                 style="@style/CustomEmailPassEditText"
                 android:hint="Email Id or UserId" />

@@ -59,6 +59,8 @@ class Repository(private val dao: Dao) {
         return workShopList
     }
 
+    fun fetchAllEnrolledWorkShops(userId: Int) = dao.fetchAppliedWorkShops(userId)
+
     suspend fun getUserInfo(userId: Int, userName: MutableLiveData<String>){
         userName.value = withContext(Dispatchers.IO){dao.getUserInfo(userId)}
     }

@@ -4,10 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.workshop.database.*
 import com.example.workshop.fakedata.SampleData
 import kotlinx.coroutines.Dispatchers
@@ -33,6 +30,8 @@ class WorkShopVeiwModel(application: Application): AndroidViewModel(application)
     var isDataAddedToDatabase: Boolean
     var userId = MutableLiveData<Int>(0)
     var userName = MutableLiveData<String>()
+
+    var _appliedWorkshops = MutableLiveData<List<WorkShopTable>>()
 
     init {
         repo = Repository(dao)
@@ -90,8 +89,12 @@ class WorkShopVeiwModel(application: Application): AndroidViewModel(application)
 
     fun fetchEnrolledWorkshops(){
         viewModelScope.launch(Dispatchers.IO) {
-            repo.fetchEnrolledWorkShops(userId.value!!)
+            //_appliedWorkshops = repo.fetchEnrolledWorkShops(userId.value!!)
         }
+    }
+
+    fun fetchAppliedWorkShops(): LiveData<List<WorkShopTable>>{
+        return repo.fetchAllEnrolledWorkShops(userId.value!!).asLiveData()
     }
 
     fun getUserInfo(){
