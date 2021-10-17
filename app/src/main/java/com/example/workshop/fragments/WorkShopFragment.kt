@@ -56,7 +56,7 @@ class WorkShopFragment : Fragment() {
     }
 
     private fun setUpRecyclerView() {
-        workShopAdapter = WorkShopAdapter()
+        workShopAdapter = WorkShopAdapter(viewModel)
         binding.rvWorkshop.apply {
             adapter = workShopAdapter
             layoutManager = LinearLayoutManager(requireContext())

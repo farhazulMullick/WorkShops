@@ -8,10 +8,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.workshop.database.Dao
-import com.example.workshop.database.MainDatabase
-import com.example.workshop.database.Repository
-import com.example.workshop.database.WorkShopTable
+import com.example.workshop.database.*
 import com.example.workshop.fakedata.SampleData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -30,12 +27,18 @@ class WorkShopVeiwModel(application: Application): AndroidViewModel(application)
 
     // WorkShopFragemnt
     val _allWorkShops: LiveData<List<WorkShopTable>>
+    val _enrolledWorkShops: LiveData<List<WorkShopTable>>
     var sharedPref : SharedPreferences
+    var userIdSharedPred: SharedPreferences
     var isDataAddedToDatabase: Boolean
+    var userId = MutableLiveData<Int>(0)
+    var userName = MutableLiveData<String>()
 
     init {
         repo = Repository(dao)
         _allWorkShops = repo.getAllWorkShops()
+        userIdSharedPred = getApplication<Application>().getSharedPreferences("LoginSignUp", Context.MODE_PRIVATE)
+        _enrolledWorkShops = repo.fetchEnrolledWorkShops(userIdSharedPred.getInt("userId", 0))
         sharedPref = getApplication<Application>().getSharedPreferences("WorkShopSp", Context.MODE_PRIVATE)
         isDataAddedToDatabase = sharedPref.getBoolean("isDataAdded", false)
     }
@@ -64,5 +67,41 @@ class WorkShopVeiwModel(application: Application): AndroidViewModel(application)
                 Log.d(TAG, "addAllWorkShops-> Already added")
             }
         }
+    }
+
+    fun getUserId(): Int{
+        userId.value = userIdSharedPred.getInt("userId", 0)
+        Log.d(TAG, "getUserId -> ${userId.value}")
+        return userId.value!!
+    }
+
+    fun enrollInWorkShop(workshopId: Int){
+        viewModelScope.launch(Dispatchers.IO) {
+            Log.d(TAG, "Applied to work shop")
+            repo.enrollInWorkShop(
+                Enrollments(
+                    0,
+                    userId.value!!,
+                    workshopId
+                )
+            )
+        }
+    }
+
+    fun fetchEnrolledWorkshops(){
+        viewModelScope.launch(Dispatchers.IO) {
+            repo.fetchEnrolledWorkShops(userId.value!!)
+        }
+    }
+
+    fun getUserInfo(){
+        viewModelScope.launch {
+            repo.getUserInfo(userId.value!!, userName)
+        }
+    }
+
+    fun logOut(){
+        userIdSharedPred.edit().putInt("userId", 0).apply()
+        userId.value = 0
     }
 }

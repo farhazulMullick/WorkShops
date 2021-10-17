@@ -1,5 +1,6 @@
 package com.example.workshop.adapter
 
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,8 +12,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.workshop.R
 import com.example.workshop.database.WorkShopTable
+import com.example.workshop.loginsignup.LoginActivity
+import com.example.workshop.viewmodel.WorkShopVeiwModel
 
-class WorkShopAdapter: RecyclerView.Adapter<WorkShopAdapter.WorkShopViewHolder>() {
+class WorkShopAdapter(val viewModel: WorkShopVeiwModel): RecyclerView.Adapter<WorkShopAdapter.WorkShopViewHolder>() {
     companion object{
         const val TAG = "WorkShopAdapter"
     }
@@ -43,7 +46,15 @@ class WorkShopAdapter: RecyclerView.Adapter<WorkShopAdapter.WorkShopViewHolder>(
                 .into(imgWorkShop)
 
             btnApply.setOnClickListener {
-
+                viewModel.getUserId()
+                if (viewModel.userId.value!! <= 0){
+                    Intent(this.itemView.context, LoginActivity::class.java).apply {
+                        itemView.context.startActivity(this)
+                    }
+                }
+                else{
+                    viewModel.enrollInWorkShop(currentData.workShopId)
+                }
             }
 
             tvKnowMore.setOnClickListener {

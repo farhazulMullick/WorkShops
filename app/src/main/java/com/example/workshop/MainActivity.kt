@@ -1,11 +1,14 @@
 package com.example.workshop
 
+import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.workshop.databinding.ActivityMainBinding
@@ -31,6 +34,29 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         binding.navView.setNavigationItemSelectedListener(this)
 
         setUpDrawerHandle()
+
+        inflateNavMenuLayout()
+    }
+
+    private fun inflateNavMenuLayout() {
+        viewModel.getUserId()
+        viewModel.userId.observe(this, Observer { userId ->
+            if (userId > 0){
+                // Signed in state
+                binding.navView.apply{
+                    menu.clear()
+                    inflateMenu(R.menu.manu_nav_with_login)
+                }
+            }
+            else{
+                // sign out state
+                binding.navView.apply{
+                    menu.clear()
+                    inflateMenu(R.menu.menu_nav_drawer_logout)
+                }
+            }
+        })
+
     }
 
     private fun setUpDatabase() {
@@ -70,6 +96,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.dashBoard->{
                 findNavController(R.id.workshopnavhostfragment).navigate(R.id.dashBoardFragment)
+            }
+
+            R.id.logout ->{
+                AlertDialog.Builder(this).apply {
+                    setTitle("Do you want to logout?")
+                    setPositiveButton("Okay", DialogInterface.OnClickListener { dialog, which ->
+                        viewModel.logOut()
+                    })
+                    setNegativeButton("No", DialogInterface.OnClickListener { dialog, which ->  })
+                }
+                    .create()
+                    .show()
             }
         }
         binding.drawerLayout.apply {

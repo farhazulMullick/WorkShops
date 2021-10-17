@@ -28,15 +28,14 @@ class CreateAccActivity : AppCompatActivity(), AuthListener {
     }
 
     override fun onAuthFailed(message: String) {
-        this.toastLong(message)
+        lifecycleScope.launch(Dispatchers.Main.immediate) {
+            applicationContext.toastLong(message)
+        }
     }
 
     override fun onAuthCompleted() {
         lifecycleScope.launch(Dispatchers.Main) {
             applicationContext.toast("Successfully created Account")
-            Intent(this@CreateAccActivity, MainActivity::class.java).apply {
-                startActivity(this)
-            }
             finish()
         }
     }

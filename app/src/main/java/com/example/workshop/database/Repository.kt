@@ -4,6 +4,8 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.workshop.listeners.AuthListener
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class Repository(private val dao: Dao) {
     companion object{
@@ -19,8 +21,19 @@ class Repository(private val dao: Dao) {
         dao.addAllWorkShops(workShopTable)
     }
 
-    suspend fun loginCurrentUser(emailId: String, password: String) =
-        dao.loginUser(emailId, password)
+
+
+    suspend fun getUserId(
+        emailId: String,
+        password: String,
+        userId: MutableLiveData<Int>,
+        authListener: AuthListener?
+    ) {
+        userId.value = withContext(Dispatchers.IO){
+            authListener?.onAuthCompleted()
+            dao.loginUser(emailId, password)
+        }
+    }
 
     fun signUpNewUser(userTable: UserTable, authListener: AuthListener? = null){
         dao.signUpNewUser(userTable)
@@ -35,7 +48,7 @@ class Repository(private val dao: Dao) {
         dao.unEnrollFromworkShop(enrollments)
     }
 
-    suspend fun fetchEnrolledWorkShops(userId: Int)
+    fun fetchEnrolledWorkShops(userId: Int)
     : LiveData<List<WorkShopTable>> {
         val workShopList = dao.fetchEnrolledWorkShops(userId)
         if ( !workShopList.value.isNullOrEmpty()){
@@ -44,5 +57,9 @@ class Repository(private val dao: Dao) {
         }
         Log.d(TAG, "fetchEnrolledWorkShops -> Not found")
         return workShopList
+    }
+
+    suspend fun getUserInfo(userId: Int, userName: MutableLiveData<String>){
+        userName.value = withContext(Dispatchers.IO){dao.getUserInfo(userId)}
     }
 }

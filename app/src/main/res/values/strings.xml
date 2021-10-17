@@ -2,4 +2,6 @@
     <string name="app_name">WorkShop</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="create_account"><u> Create Account</u></string>
+    <string name="login"><u>Login</u></string>
 </resources>
