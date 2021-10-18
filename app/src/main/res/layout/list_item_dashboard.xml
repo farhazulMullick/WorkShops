@@ -65,6 +65,7 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:padding="10dp"
+                    android:textColor="@color/blue"
                     android:text="Know More"
                     android:textAlignment="center" />
 
