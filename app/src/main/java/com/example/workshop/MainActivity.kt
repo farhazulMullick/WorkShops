@@ -35,6 +35,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         setUpDrawerHandle()
 
+        viewModel.pageTitle.observe(this, Observer {
+            binding.toolbar.title = it
+        })
 
     }
 

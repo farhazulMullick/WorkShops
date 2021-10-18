@@ -7,9 +7,11 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.example.workshop.database.*
 import com.example.workshop.fakedata.SampleData
+import com.example.workshop.listeners.WorkShopEnrollmentListener
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class WorkShopVeiwModel(application: Application): AndroidViewModel(application) {
 
@@ -30,8 +32,10 @@ class WorkShopVeiwModel(application: Application): AndroidViewModel(application)
     var isDataAddedToDatabase: Boolean
     var userId = MutableLiveData<Int>(0)
     var userName = MutableLiveData<String>()
+    var pageTitle = MutableLiveData<String>()
 
     var _appliedWorkshops = MutableLiveData<List<WorkShopTable>>()
+    var workShopEnrollmentListener: WorkShopEnrollmentListener? = null
 
     init {
         repo = Repository(dao)
@@ -74,8 +78,13 @@ class WorkShopVeiwModel(application: Application): AndroidViewModel(application)
         return userId.value!!
     }
 
-    fun enrollInWorkShop(workshopId: Int){
+    fun enrollInWorkShop(workshopId: Int, title: String){
         viewModelScope.launch(Dispatchers.IO) {
+            if (checkIfAlreadyEnrolled(userId.value!!, workshopId) == 1){
+                Log.d(TAG, "Already Applied")
+                workShopEnrollmentListener?.onApplyFailed("Already Applied")
+                return@launch
+            }
             Log.d(TAG, "Applied to work shop")
             repo.enrollInWorkShop(
                 Enrollments(
@@ -84,6 +93,13 @@ class WorkShopVeiwModel(application: Application): AndroidViewModel(application)
                     workshopId
                 )
             )
+            workShopEnrollmentListener?.onApplied("SuccessFully Applied to $title")
+        }
+    }
+
+    suspend fun checkIfAlreadyEnrolled(userId: Int, workshopId: Int): Int{
+        return withContext(Dispatchers.IO){
+            repo.checkIfAlreadyEnrolled(userId, workshopId)
         }
     }
 
@@ -100,6 +116,12 @@ class WorkShopVeiwModel(application: Application): AndroidViewModel(application)
     fun getUserInfo(){
         viewModelScope.launch {
             repo.getUserInfo(userId.value!!, userName)
+        }
+    }
+
+    fun unEnroll(userId: Int, workshopId: Int){
+        viewModelScope.launch {
+            repo.unEnrollFromWorkShop(userId, workshopId)
         }
     }
 

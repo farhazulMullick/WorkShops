@@ -17,5 +17,8 @@ data class WorkShopTable (
     val description: String,
 
     @ColumnInfo(name = "img_url")
-    val imgUrl: String
+    val imgUrl: String,
+
+    @ColumnInfo(name = "web_link")
+    val webLink: String
 )

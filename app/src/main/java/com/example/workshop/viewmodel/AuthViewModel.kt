@@ -41,8 +41,15 @@ class AuthViewModel(app: Application) : AndroidViewModel(app) {
 
     fun getUserId(emailId: String, password: String, authListener: AuthListener?) {
         viewModelScope.launch {
-            repo.getUserId(emailId, password, userId, authListener)
-            sharedPref.edit().putInt("userId", userId.value!!).apply()
+            repo.getUserId(emailId, password, userId)
+
+            if (userId.value!! > 0){
+                authListener?.onAuthCompleted()
+                sharedPref.edit().putInt("userId", userId.value!!).apply()
+            }
+            else{
+                authListener?.onAuthFailed("Sorry, No Users Found")
+            }
             Log.d(TAG, "getUsrId -> uid ${userId.value} username ")
         }
     }

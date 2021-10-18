@@ -32,8 +32,11 @@ interface Dao {
     suspend fun applyForWorkShop(enrollments: Enrollments)
 
     // Un-enrolls from a workshop
-    @Delete
-    suspend fun unEnrollFromworkShop(enrollments: Enrollments)
+    @Query("DELETE FROM enrollments WHERE user_id = :userId AND workshop_id = :workShopId")
+    suspend fun unEnrollFromworkShop(userId: Int, workShopId: Int)
+
+    @Query("SELECT EXISTS (SELECT * FROM enrollments WHERE user_id= :userId AND workshop_id = :workShopId)")
+    suspend fun checkIfAlreadyEnrolled(userId: Int, workShopId: Int): Int
 
     @Query("SELECT * FROM workshop_table INNER JOIN enrollments ON workshop_table.workshop_id = enrollments.workshop_id WHERE enrollments.user_id = :userId")
     fun fetchEnrolledWorkShops(userId: Int): LiveData<List<WorkShopTable>>

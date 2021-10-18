@@ -10,15 +10,20 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.workshop.MainActivity
 import com.example.workshop.R
 import com.example.workshop.adapter.WorkShopAdapter
 import com.example.workshop.databinding.FragmentWorkShopBinding
 import com.example.workshop.factory.WorkShopViewModelFactory
+import com.example.workshop.listeners.WorkShopEnrollmentListener
+import com.example.workshop.viewUtils.toast
 import com.example.workshop.viewmodel.WorkShopVeiwModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class WorkShopFragment : Fragment() {
+class WorkShopFragment : Fragment(), WorkShopEnrollmentListener {
     private var _binding : FragmentWorkShopBinding? = null
     private val binding get() = _binding!!
 
@@ -37,9 +42,10 @@ class WorkShopFragment : Fragment() {
         // ViewModel
         val factory = WorkShopViewModelFactory(activity?.application!!)
         viewModel = ViewModelProvider(requireActivity(), factory).get(WorkShopVeiwModel::class.java)
-
+        viewModel.workShopEnrollmentListener = this
         setUpRecyclerView()
         fetchDataFromDatabse()
+        viewModel.pageTitle.value = "Work Shops"
         return binding.root
     }
 
@@ -70,5 +76,17 @@ class WorkShopFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    override fun onApplied(message: String) {
+        lifecycleScope.launch(Dispatchers.Main.immediate){
+            context?.toast(message)
+        }
+    }
+
+    override fun onApplyFailed(message: String) {
+        lifecycleScope.launch(Dispatchers.Main.immediate){
+            context?.toast(message)
+        }
     }
 }

@@ -10,9 +10,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.workshop.R
+import com.example.workshop.database.Enrollments
 import com.example.workshop.database.WorkShopTable
+import com.example.workshop.viewUtils.customChrometab
+import com.example.workshop.viewmodel.WorkShopVeiwModel
 
-class DashBoardAdapter: RecyclerView.Adapter<DashBoardAdapter.MyViewHolder>() {
+class DashBoardAdapter(val viewModel: WorkShopVeiwModel): RecyclerView.Adapter<DashBoardAdapter.MyViewHolder>() {
     companion object{
         const val TAG = "DashBoardAdapter"
     }
@@ -47,11 +50,14 @@ class DashBoardAdapter: RecyclerView.Adapter<DashBoardAdapter.MyViewHolder>() {
 
 
             btnUnenroll.setOnClickListener {
-
+                viewModel.unEnroll(
+                    viewModel.userId.value!!,
+                    workshopId = currentData.workShopId
+                )
             }
 
             tvKnowMore.setOnClickListener {
-
+                itemView.context.customChrometab(currentData.webLink)
             }
             Log.d(TAG, "onBindHolder -> id ${currentData.workShopId}")
         }

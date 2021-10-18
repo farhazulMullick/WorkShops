@@ -26,11 +26,9 @@ class Repository(private val dao: Dao) {
     suspend fun getUserId(
         emailId: String,
         password: String,
-        userId: MutableLiveData<Int>,
-        authListener: AuthListener?
+        userId: MutableLiveData<Int>
     ) {
         userId.value = withContext(Dispatchers.IO){
-            authListener?.onAuthCompleted()
             dao.loginUser(emailId, password)
         }
     }
@@ -44,8 +42,11 @@ class Repository(private val dao: Dao) {
         dao.applyForWorkShop(enrollments)
     }
 
-    suspend fun unEnrollFromWorkShop(enrollments: Enrollments){
-        dao.unEnrollFromworkShop(enrollments)
+    suspend fun checkIfAlreadyEnrolled(userId: Int, workShopId: Int)
+    = dao.checkIfAlreadyEnrolled(userId, workShopId)
+
+    suspend fun unEnrollFromWorkShop(userId: Int, workShopId: Int){
+        dao.unEnrollFromworkShop(userId, workShopId)
     }
 
     fun fetchEnrolledWorkShops(userId: Int)

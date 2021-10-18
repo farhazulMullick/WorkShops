@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.workshop.R
 import com.example.workshop.adapter.DashBoardAdapter
@@ -40,12 +41,12 @@ class DashBoardFragment : Fragment() {
 
 
         setUpRecyclerView()
-
+        viewModel.pageTitle.value = "DashBoard"
         return binding.root
     }
 
     private fun setUpRecyclerView() {
-        dashBoardAdapter = DashBoardAdapter()
+        dashBoardAdapter = DashBoardAdapter(viewModel)
         binding.rvMyworkshops.apply {
             adapter = dashBoardAdapter
             layoutManager = LinearLayoutManager(requireContext())
@@ -68,6 +69,7 @@ class DashBoardFragment : Fragment() {
     fun signOutState(){
         binding.signInLayout.visibility = View.GONE
         binding.signOutLayout.visibility = View.VISIBLE
+        binding.emptyListState.visibility = View.GONE
 
         binding.btnLogin.setOnClickListener{
             Intent(requireContext(), LoginActivity::class.java).apply {
@@ -81,6 +83,22 @@ class DashBoardFragment : Fragment() {
             }
         }
     }
+
+    fun showEmptyListState(){
+        binding.emptyListState.visibility = View.VISIBLE
+        binding.enrolledWorkshopList.visibility = View.GONE
+
+        binding.btnApply.setOnClickListener {
+            findNavController().navigate(R.id.action_dashBoardFragment_to_workShopFragment)
+        }
+    }
+
+    fun hideEmptyListState(){
+        binding.emptyListState.visibility = View.GONE
+        binding.enrolledWorkshopList.visibility = View.VISIBLE
+    }
+
+
 
     override fun onStart() {
         super.onStart()
@@ -96,10 +114,13 @@ class DashBoardFragment : Fragment() {
                 viewModel.fetchAppliedWorkShops().observe(viewLifecycleOwner, Observer {
                     if (it.isNullOrEmpty()){
                         Log.d(TAG, "No Enrollments")
+                        showEmptyListState()
                     }
                     else{
-                        dashBoardAdapter.setData(it)
+                        hideEmptyListState()
                     }
+                    Log.d(TAG, "enrolled Workshops ${it.size}")
+                    dashBoardAdapter.setData(it)
 
                 })
             }

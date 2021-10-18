@@ -9,11 +9,7 @@
         android:id="@+id/workShopFragment"
         android:name="com.example.workshop.fragments.WorkShopFragment"
         android:label="fragment_work_shop"
-        tools:layout="@layout/fragment_work_shop" >
-        <action
-            android:id="@+id/action_workShopFragment_to_dashBoardFragment"
-            app:destination="@id/dashBoardFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_work_shop" />
     <activity
         android:id="@+id/loginActivity"
         android:name="com.example.workshop.loginsignup.LoginActivity"
@@ -23,5 +19,13 @@
         android:id="@+id/dashBoardFragment"
         android:name="com.example.workshop.fragments.DashBoardFragment"
         android:label="fragment_dash_board"
-        tools:layout="@layout/fragment_dash_board" />
+        tools:layout="@layout/fragment_dash_board" >
+        <action
+            android:id="@+id/action_dashBoardFragment_to_workShopFragment"
+            app:destination="@id/workShopFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
 </navigation>
